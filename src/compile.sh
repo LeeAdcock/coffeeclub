@@ -1,1 +1,1 @@
-javac com/capitalone/coffeeclub/casino/*.java
+javac com/capitalone/coffeeclub/adventureGame/*.java
