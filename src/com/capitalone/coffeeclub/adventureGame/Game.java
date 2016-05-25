@@ -1,5 +1,6 @@
 package com.capitalone.coffeeclub.adventureGame;
 
+//Java utilites
 import java.util.Scanner; // supports the scanner utility
 import java.util.Random; // supports the random utility
 
@@ -14,9 +15,9 @@ public class Game {
     Random rand = new Random();
     
     // game variables
-    String[] enemies = { "Warlock", "Witch", "Samurai", "Dragon" }; // enemies
+    String[] enemies = { "Smeagol", "Dragon", "Troll", "Wizard", "Talent Management"}; // enemies
     int maxEnemyHealth = 75; // enemy max health
-    int enemyAttackDamage = 25; // enemy attack damage
+    int enemyAttackDamage = 40; // enemy attack damage
     
     // player variables
     int health = 100; // player health
@@ -35,7 +36,7 @@ public class Game {
         System.out.println("__________________________________________________");
         
         // populates enemies
-        int enemyHealth = rand.nextInt(maxEnemyHealth); // sets the enemy health between 0 and the max enemy health
+        int enemyHealth = 40 + rand.nextInt(41); // sets the enemy health between 0 and the max enemy health
         String enemy = enemies[rand.nextInt(enemies.length)]; // selects a random amount of enemies from the enemies array
         System.out.println("\t# " + enemy + " appeared! #\n"); // prints out which enemies are populated
         
@@ -47,15 +48,20 @@ public class Game {
             System.out.println("\t2. Drink health potion");
             System.out.println("\t3. Run away!");
             
+            boolean isTalent = enemy.equals("Talent Management");
             String input = in.nextLine(); // grabs user input
             if(input.equals("1")) {
-                int damageDealt = rand.nextInt(attackDamage); // generates a random number between 0 and attackDamage value
+                int damageDealt = 10 + rand.nextInt(attackDamage); // generates a random number between 0 and attackDamage value
                 int damageTaken = rand.nextInt(enemyAttackDamage); // generates a random number between 0 and enemyAttackDamage value
+                
+                if(isTalent) {
+                    damageTaken = Integer.MAX_VALUE;
+                }
                 
                 enemyHealth -= damageDealt; // subtracts the damageDealt value from the enemy Health
                 health -= damageTaken; // subtracts the damageTaken value from the player health
                 
-                System.out.println("\t> You strike the " + enemy + "for  " + damageDealt + " damage.");
+                System.out.println("\t> You strike the " + enemy + " for " + damageDealt + " damage.");
                 System.out.println("\t> You recieve " + damageTaken + " in retaliation!");
                 
                 if(health < 1) {
@@ -76,11 +82,15 @@ public class Game {
                 }
             }
             else if (input.equals("3")) {
+                if(isTalent){
+                    System.out.println("Action Required: no running from " + enemy);
+                    continue;
+                }
                 System.out.println("\tYou run away from the " + enemy + "!");
                 continue GAME; // goes back to the start of the loop, breaks out of current loop and goes back to the start of the GAME loop
             }
             else {
-                System.out.println("\t Invalid command. Please select options 1-3.");
+                System.out.println("\t Invalid command. Please select options 1, 2 or 3.");
             }
         }
         
@@ -91,7 +101,7 @@ public class Game {
         
         System.out.println("__________________________________________________");
         System.out.println(" # " + enemy + " was defeated! # "); // prints out the enemy that was defeated
-        System.out.println(" # You have " + health + " HP left.");
+        System.out.println(" # You have " + health + " HP left. #");
         if(rand.nextInt(100) < healthPotionDropChance) {
             numHealthPotions++;
             System.out.println(" # " + enemy + " dropped a health potion # ");
